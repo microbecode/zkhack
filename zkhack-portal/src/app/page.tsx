@@ -91,9 +91,9 @@ function Home() {
 function AppContent() {
   const { wallet } = useWallet();
 
-  if (!wallet) {
-    return <LandingPage />;
-  }
+  // if (!wallet) {
+  //   return <LandingPage />;
+  // }
 
   return (
     <GameProvider>

@@ -9,6 +9,16 @@ export default function Grid({
 }) {
   if (!grid || grid.length === 0) return <p>Loading grid...</p>; // fallback
 
+  const backgrounds = [];
+
+  // Base tile (e.g. road/ground)
+  backgrounds.push("url('/sprites/road-1.png')");
+
+  // Conditional overlay
+  // if (cell.type === CellType.WALL) {
+  //   backgrounds.push("url('/sprites/house-1.png')");
+  // }
+
   return (
     <div
       style={{
@@ -17,17 +27,33 @@ export default function Grid({
         position: "relative",
       }}
     >
-      {grid.flat().map((cell) => (
-        <div
-          key={`${cell.x}-${cell.y}`}
-          style={{
-            width: 30,
-            height: 30,
-            backgroundColor: getColor(cell.type),
-            boxSizing: "border-box",
-          }}
-        />
-      ))}
+      {grid.flat().map((cell) => {
+        const backgrounds = [];
+
+        // Conditional overlay
+        if (cell.type === CellType.WALL) {
+          backgrounds.push("url('/sprites/house-1.png')");
+        }
+
+        // Base tile (e.g. road/ground)
+        backgrounds.push("url('/sprites/road-1.png')");
+
+        return (
+          <div
+            key={`${cell.x}-${cell.y}`}
+            style={{
+              width: 30,
+              height: 30,
+              backgroundImage: backgrounds.join(','),
+              backgroundSize: 'cover',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              backgroundColor: getColor(cell.type),
+              boxSizing: 'border-box',
+            }}
+          />
+        );
+      })}
       {children}
     </div>
   );

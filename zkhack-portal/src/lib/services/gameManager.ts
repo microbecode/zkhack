@@ -4,21 +4,13 @@ import { PlayerHandler } from "@/lib/services/playerHandler";
 import { Item } from "lib/types/item";
 import { Level, LevelProgress } from "lib/types/level";
 import { LEVELS } from "lib/data/levels";
-
-type GameEvent =
-  | { type: "playerMoved"; x: number; y: number }
-  | { type: "playerCollided"; x: number; y: number }
-  | { type: "playerFinished"; x: number; y: number }
-  | { type: "itemPicked"; item: Item; at: { x: number; y: number } }
-  | { type: "levelCompleted"; levelId: number }
-  | { type: "levelChanged"; levelId: number };
-
-type GameEventHandler = (event: GameEvent) => void;
+import { GameEvent } from "../types/gameEvent";
+import { EventHandler } from "./eventHandler";
 
 export class GameManager {
   gridHandler: GridHandler;
   playerHandler: PlayerHandler;
-  private eventHandlers: GameEventHandler[] = [];
+  eventHandler: EventHandler;
   currentLevelId: number = 1;
   levelProgress: Map<number, LevelProgress> = new Map();
   itemsCollected: number = 0;
@@ -27,7 +19,7 @@ export class GameManager {
   constructor() {
     this.gridHandler = new GridHandler(this);
     this.playerHandler = new PlayerHandler(0, 0, this);
-    this.onEvent((e) => console.log("[GameEvent]", e));
+    this.eventHandler = new EventHandler()
     this.loadLevel(1); // Start with level 1
   }
 
@@ -94,14 +86,13 @@ export class GameManager {
     this.emit({ type: "levelCompleted", levelId: this.currentLevelId });
   }
 
-  onEvent(handler: GameEventHandler) {
-    this.eventHandlers.push(handler);
-  }
+  // onEvent(handler: GameEventHandler) {
+  //   this.eventHandlers.push(handler);
+  // }
 
   emit(event: GameEvent) {
-    for (const handler of this.eventHandlers) {
-      handler(event);
-    }
+    this.eventHandler.handle(event)
+  
     if (event.type === "playerMoved") {
       this.steps++;
       console.log(`[Game] Steps: ${this.steps}`);
