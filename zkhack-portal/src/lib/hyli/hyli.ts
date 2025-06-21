@@ -10,6 +10,8 @@ import { CompiledCircuit, InputMap } from "@noir-lang/types";
 import { Noir } from "@noir-lang/noir_js";
 import { reconstructHonkProof, UltraHonkBackend } from "@aztec/bb.js";
 
+const CONTRACT_NAME = "stuff";
+
 // We'll load the circuit dynamically
 let defaultCircuit: any = null;
 
@@ -40,9 +42,9 @@ export const runAction = async (identityBlobs: [Blob, Blob]) => {
       identity,
       blobs: [blob0, blob1,blob2],
     };
-
+console.log("registering contract");
     await register_contract(nodeService.client as any);
-
+console.log("sending blob tx");
     const txHash = await nodeService.client.sendBlobTx(blobTx);
 
      const proofTx  = await build_proof_transaction(1,2);
@@ -57,7 +59,7 @@ export const runAction = async (identityBlobs: [Blob, Blob]) => {
   const build_my_blob = async (x: number, y: number
   ): Promise<Blob> => {
     const secretBlob: Blob = {
-      contract_name: "stuff",
+      contract_name: CONTRACT_NAME,
       data: Array.from([x,y]),
     };
   
@@ -69,7 +71,7 @@ export const runAction = async (identityBlobs: [Blob, Blob]) => {
     circuit?: CompiledCircuit,
   ): Promise<void> => {
     const circuitData = circuit || (await loadCircuit() as CompiledCircuit);
-    await node.getContract("check_secret").catch(async () => {
+    await node.getContract(CONTRACT_NAME).catch(async () => {
       const backend = new UltraHonkBackend(circuitData.bytecode);
   
       const vk = await backend.getVerificationKey();
@@ -78,7 +80,7 @@ export const runAction = async (identityBlobs: [Blob, Blob]) => {
         verifier: "noir",
         program_id: Array.from(vk),
         state_commitment: [0, 0, 0, 0],
-        contract_name: "check_secret",
+        contract_name: CONTRACT_NAME,
       });
     });
   };
@@ -100,7 +102,7 @@ export const runAction = async (identityBlobs: [Blob, Blob]) => {
     );
   
     return {
-      contract_name: "stuff",
+      contract_name: CONTRACT_NAME,
       proof: Array.from(reconstructedProof),
     };
   };
