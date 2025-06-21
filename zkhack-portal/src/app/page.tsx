@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
@@ -8,14 +8,18 @@ import { runAction } from "@/lib/hyli/hyli";
 import { useGame } from "./context/GameContext";
 import Player from "./components/Player";
 import { ItemComponent } from "./components/Item";
+import { Cell } from "@/lib/types/cell";
 
 function Home() {
   const { logout, wallet, createIdentityBlobs } = useWallet();
+  const [grid, setGrid] = useState<Cell[][]>([]);
+  const [currNum, setCurrNum] = useState(0); // temp location of the player
 
   const action = async () => {
     const [blob0, blob1] = createIdentityBlobs();
-    await runAction([blob0, blob1]);
-  }
+    setCurrNum(currNum + 1);
+    await runAction([blob0, blob1], currNum);
+  };
 
   const gm = useGame()
 
@@ -76,9 +80,9 @@ function Home() {
 function AppContent() {
   const { logout, wallet, createIdentityBlobs } = useWallet();
 
-  // if (!wallet) {
-  //   return <LandingPage />;
-  // }
+  if (!wallet) {
+    return <LandingPage />;
+  }
 
   return <Home />;
 }
@@ -93,9 +97,7 @@ function LandingPage() {
         <p className="hero-subtitle">
           A starting point for your next blockchain application
         </p>
-        <HyliWallet
-          providers={["password", "google", "github"]}
-        />
+        <HyliWallet providers={["password", "google", "github"]} />
       </div>
       <div className="floating-shapes">
         <div className="shape shape-1"></div>
@@ -116,13 +118,13 @@ function App() {
       }}
       sessionKeyConfig={{
         duration: 24 * 60 * 60 * 1000, // Session key duration in ms (default: 72h)
-        whitelist: ["contract1", "contract2"], // Required: contracts allowed for session key
+        whitelist: ["circuit"], // Required: contracts allowed for session key
       }}
-    /* forceSessionKeyCreation={true} // Default: undefined, letting user decide */
+      /* forceSessionKeyCreation={true} // Default: undefined, letting user decide */
     >
       <AppContent />
     </WalletProvider>
-  )
+  );
 }
 
 export default App;
