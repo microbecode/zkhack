@@ -25,6 +25,7 @@ export class GameManager {
 
   loadLevel(levelId: number): void {
     const level = LEVELS.find((l) => l.id === levelId);
+    console.log(levelId)
     if (!level) {
       throw new Error(`Level ${levelId} not found`);
     }

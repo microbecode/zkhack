@@ -98,8 +98,10 @@ function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <LevelInfo />
-        <Grid grid={gm.gridHandler.grid}>
+        <div style={{ display: 'flex', gap: 16 }}>
+          <LevelInfo />
+          <div>
+          <Grid grid={gm.gridHandler.grid}>
           {gm.gridHandler.grid
             ?.flat()
             .map((cell) =>
@@ -114,7 +116,9 @@ function Home() {
             )}
           <Player handler={gm.playerHandler}></Player>
         </Grid>
+          </div>
         <LevelSelector />
+        </div>
         <div className={styles.buttonContainer}>
           <button onClick={() => logout()}>Logout</button>
           <button onClick={() => action()}>Action</button>
