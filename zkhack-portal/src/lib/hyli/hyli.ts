@@ -9,6 +9,8 @@ import {
 import { CompiledCircuit, InputMap } from "@noir-lang/types";
 import { Noir } from "@noir-lang/noir_js";
 import { reconstructHonkProof, UltraHonkBackend } from "@aztec/bb.js";
+import { UltraPlonkBackend as UltraPlonkBackend0764 } from "bbjs-0764";
+import axios from "axios";
 
 export const CONTRACT_NAME = "circuit";
 const IDENTITY = `hyli@${CONTRACT_NAME}`;
@@ -113,6 +115,41 @@ const build_proof_transaction = async (
   const { witness } = await noir.execute(data);
 
   const proof = await backend.generateProof(witness);
+
+  if (process.env.NEXT_PUBLIC_HORIZEN_API_KEY) {
+    const plonkBackend = new UltraPlonkBackend0764(circuit.bytecode);
+
+    const plonkProof = await plonkBackend.generateProof(witness);
+    console.log("plonkProof", plonkProof);
+
+    // Get verification key and encode both proof and vk to base64
+    const vk = await plonkBackend.getVerificationKey();
+
+    // Convert proof to base64 - plonkProof is a ProofData object
+    const base64Proof = Buffer.from(plonkProof.proof).toString("base64");
+    const base64Vk = Buffer.from(vk).toString("base64");
+
+    const params = {
+      proofType: "ultraplonk",
+      vkRegistered: false,
+      proofOptions: {
+        numberOfPublicInputs: 18, // Replace this for the number of public inputs your circuit support
+      },
+      proofData: {
+        proof: base64Proof,
+        vk: base64Vk,
+      },
+    };
+
+    const requestResponse = await axios.post(
+      `https://relayer-api.horizenlabs.io/api/v1/submit-proof/${process.env.NEXT_PUBLIC_HORIZEN_API_KEY}`,
+      params
+    );
+    console.log(requestResponse.data);
+  } else {
+    console.log("No Horizen API key found");
+  }
+
   const reconstructedProof = reconstructHonkProof(
     flattenFieldsAsArray(proof.publicInputs),
     proof.proof
@@ -122,12 +159,6 @@ const build_proof_transaction = async (
     contract_name: CONTRACT_NAME,
     proof: Array.from(reconstructedProof),
   };
-};
-
-const padTo32 = (x: number): number[] => {
-  const result = new Array(32).fill(0);
-  result[31] = x;
-  return result;
 };
 
 const padTo32Two = (x: number, y: number): number[] => {

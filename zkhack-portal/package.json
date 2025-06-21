@@ -9,6 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aztec/bb.js": "^0.76.4",
+    "@noir-lang/noir_js": "^1.0.0-beta.7",
+    "@noir-lang/types": "^1.0.0-beta.7",
+    "axios": "^1.10.0",
+    "bbjs-0764": "npm:@aztec/bb.js@0.76.4",
+    "hyli-check-secret": "^0.3.5",
     "hyli-wallet": "^0.3.5",
     "next": "15.3.4",
     "react": "^19.0.0",
