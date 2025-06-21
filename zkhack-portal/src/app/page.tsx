@@ -78,7 +78,7 @@ function App() {
       }}
       sessionKeyConfig={{
         duration: 24 * 60 * 60 * 1000, // Session key duration in ms (default: 72h)
-        whitelist: ["contract1", "contract2"], // Required: contracts allowed for session key
+        whitelist: ["circuit"], // Required: contracts allowed for session key
       }}
       /* forceSessionKeyCreation={true} // Default: undefined, letting user decide */
     >

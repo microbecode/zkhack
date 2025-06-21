@@ -31,7 +31,7 @@ export const runAction = async (
   const nodeService = NodeService.getInstance();
 
   const username = "hyli";
-  const identity = `${username}@${walletContractName}`;
+  const identity = `${username}@circuit`;
 
   const blob0 = identityBlobs[0];
   const blob1 = identityBlobs[1];
@@ -42,14 +42,14 @@ export const runAction = async (
 
   const blobTx: BlobTransaction = {
     identity,
-    blobs: [blob0, blob1, blob2],
+    blobs: [blob2],
   };
   console.log("registering contract");
   await register_contract(nodeService.client as any);
   console.log("sending blob tx");
   const txHash = await nodeService.client.sendBlobTx(blobTx);
 
-  const proofTx = await build_proof_transaction(...args);
+  const proofTx = await build_proof_transaction(...args, txHash, 0, 1);
   console.log("original", proofTx);
 
   const proofTxHash = await nodeService.client.sendProofTx(proofTx);
@@ -87,13 +87,38 @@ const register_contract = async (
 
 const build_proof_transaction = async (
   x: number,
-  y: number
+  y: number,
+  tx_hash: string,
+  blob_index: number,
+  tx_blob_count: number
 ): Promise<ProofTransaction> => {
   const circuit: CompiledCircuit = (await loadCircuit()) as CompiledCircuit;
   const noir = new Noir(circuit);
   const backend = new UltraHonkBackend(circuit.bytecode);
 
-  const { witness } = await noir.execute({ x, y });
+  const identity = "hyli@circuit";
+  const password = "hylisecure";
+
+  //const { witness } = await noir.execute({ x, y });
+
+  const hashed_password_bytes = await sha256(stringToBytes(password));
+  let encoder = new TextEncoder();
+  let id_prefix = encoder.encode(`${identity}:`);
+  let extended_id = new Uint8Array([...id_prefix, ...hashed_password_bytes]);
+  const stored_hash = await sha256(extended_id);
+
+  const data = generateProverData(
+    identity,
+    hashed_password_bytes,
+    stored_hash,
+    tx_hash,
+    blob_index,
+    tx_blob_count
+  );
+
+  console.log("DATA", data);
+
+  const { witness } = await noir.execute(data);
 
   const proof = await backend.generateProof(witness);
   const reconstructedProof = reconstructHonkProof(
@@ -105,6 +130,83 @@ const build_proof_transaction = async (
     contract_name: CONTRACT_NAME,
     proof: Array.from(reconstructedProof),
   };
+};
+
+/**
+ * Generates the prover data required for the Noir circuit.
+ *
+ * @param id - The user's identity string
+ * @param pwd - The hashed password as a Uint8Array
+ * @param stored_hash - The stored hash as a Uint8Array
+ * @param tx - The transaction hash string
+ * @returns An object containing the prover data
+ */
+const generateProverData = (
+  id: string,
+  pwd: Uint8Array,
+  stored_hash: Uint8Array,
+  tx: string,
+  blob_index: number,
+  tx_blob_count: number
+): InputMap => {
+  const version = 1;
+  const initial_state = [0, 0, 0, 0];
+  const initial_state_len = initial_state.length;
+  const next_state = [0, 0, 0, 0];
+  const next_state_len = next_state.length;
+  const identity_len = id.length;
+  const identity = id.padEnd(256, "0");
+  const tx_hash = tx.padEnd(64, "0");
+  const tx_hash_len = tx_hash.length;
+  const index = blob_index;
+  const blob_number = 1;
+  const blob_contract_name_len = "circuit".length;
+  const blob_contract_name = "circuit".padEnd(256, "0");
+  const blob_capacity = 32;
+  const blob_len = 32;
+  const blob: number[] = Array.from(stored_hash);
+  const success = 1;
+  const password: number[] = Array.from(pwd);
+  assert(password.length == 32, "Password length is not 32 bytes");
+  assert(blob.length == blob_len, "Blob length is not 32 bytes");
+
+  return {
+    version,
+    initial_state,
+    initial_state_len,
+    next_state,
+    next_state_len,
+    identity,
+    identity_len,
+    tx_hash,
+    tx_hash_len,
+    index,
+    blob_number,
+    blob_index,
+    blob_contract_name_len,
+    blob_contract_name,
+    blob_capacity,
+    blob_len,
+    blob,
+    tx_blob_count,
+    success,
+    password,
+  };
+};
+
+const sha256 = async (data: Uint8Array): Promise<Uint8Array> => {
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  return new Uint8Array(hashBuffer);
+};
+
+const stringToBytes = (input: string): Uint8Array => {
+  return new TextEncoder().encode(input);
+};
+
+const assert = (condition: boolean, message: string): void => {
+  if (!condition) {
+    throw new Error(message);
+  }
 };
 
 function flattenFieldsAsArray(fields: string[]): Uint8Array {
