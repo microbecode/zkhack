@@ -29,28 +29,30 @@ export default function Grid({
     >
       {grid.flat().map((cell) => {
         const backgrounds = [];
-
-        // Conditional overlay
-        if (cell.type === CellType.WALL) {
-          backgrounds.push("url('/sprites/house-1.png')");
+        if (cell.sprite) {
+          backgrounds.push(`url('${cell.sprite}')`);
         }
 
         // Base tile (e.g. road/ground)
         backgrounds.push("url('/sprites/road-1.png')");
+        const isEndCell = cell.type === CellType.END;
 
         return (
           <div
-            key={`${cell.x}-${cell.y}`}
-            style={{
-              width: 30,
-              height: 30,
-              backgroundImage: backgrounds.join(','),
-              backgroundSize: 'cover',
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'center',
-              backgroundColor: getColor(cell.type),
-              boxSizing: 'border-box',
-            }}
+          key={`${cell.x}-${cell.y}`}
+          style={{
+            width: 30,
+            height: 30,
+            backgroundImage: backgrounds.join(','),
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            backgroundColor: getColor(cell.type),
+            boxSizing: 'border-box',
+            boxShadow: isEndCell
+              ? '0 0 8px 4px gold'
+              : undefined,
+          }}
           />
         );
       })}
