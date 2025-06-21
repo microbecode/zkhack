@@ -10,11 +10,15 @@ import Player from "./components/Player";
 import { ItemComponent } from "./components/Item";
 import { LevelInfo } from "./components/LevelInfo";
 import { LevelSelector } from "./components/LevelSelector";
+import { ToastContainer } from "./components/Toast";
 
 function Home() {
   const { logout, wallet } = useWallet();
   const [grid, setGrid] = useState<any[][]>([]);
   const [currNum, setCurrNum] = useState(0); // temp location of the player
+  const [toasts, setToasts] = useState<
+    Array<{ id: string; message: string; duration?: number }>
+  >([]);
 
   const action = async () => {
     setCurrNum(currNum + 1);
@@ -24,6 +28,15 @@ function Home() {
   const gm = useGame();
 
   const [, forceRender] = useState(0);
+
+  const addToast = (message: string, duration = 2000) => {
+    const id = Date.now().toString();
+    setToasts((prev) => [...prev, { id, message, duration }]);
+  };
+
+  const removeToast = (id: string) => {
+    setToasts((prev) => prev.filter((toast) => toast.id !== id));
+  };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -37,27 +50,50 @@ function Home() {
       const move = moveMap[e.key as keyof typeof moveMap];
 
       if (move) {
-        gm.playerHandler.move(move[0], move[1], (x, y) =>
+        const [dx, dy] = move;
+        const direction =
+          dx === 1 ? "right" : dx === -1 ? "left" : dy === 1 ? "down" : "up";
+
+        // Get current position before move
+        const currentPos = gm.playerHandler.playerPosition;
+
+        // Perform the move
+        gm.playerHandler.move(dx, dy, (x, y) =>
           gm.gridHandler.handleCell(x, y)
         );
+
+        // Get new position after move
+        const newPos = gm.playerHandler.playerPosition;
+
+        // Only show toast if the position actually changed (move was successful)
+        if (newPos.x !== currentPos.x || newPos.y !== currentPos.y) {
+          // Show immediate movement toast
+          //addToast(`Moved ${direction} to (${newPos.x}, ${newPos.y})`);
+
+          // Handle transaction asynchronously without blocking UI
+          runAction(newPos.x, newPos.y)
+            .then((txHash) => {
+              console.log("txHash", txHash);
+              const shortHash = txHash.slice(0, 5) + "..." + txHash.slice(-5);
+              addToast(`Generated tx: ${shortHash}`);
+            })
+            .catch((error) => {
+              console.error("Transaction failed:", error);
+              addToast(`Transaction failed: ${error.message}`);
+            });
+        }
+
         forceRender((n) => n + 1); // trigger rerender
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
-    // Listen for levelChanged events
-    const handler = (event: any) => {
-      if (event.type === "levelChanged") {
-        forceRender((n) => n + 1);
-      }
-    };
-    gm.onEvent(handler);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       // No way to remove a single event handler from gm, but that's ok for now
     };
-  }, [gm]);
+  }, [gm, addToast, forceRender]);
 
   return (
     <div className={styles.page}>
@@ -84,6 +120,7 @@ function Home() {
           <button onClick={() => action()}>Action</button>
         </div>
       </main>
+      <ToastContainer toasts={toasts} onRemoveToast={removeToast} />
     </div>
   );
 }

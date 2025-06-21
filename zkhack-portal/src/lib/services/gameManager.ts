@@ -19,7 +19,7 @@ export class GameManager {
   constructor() {
     this.gridHandler = new GridHandler(this);
     this.playerHandler = new PlayerHandler(0, 0, this);
-    this.eventHandler = new EventHandler()
+    this.eventHandler = new EventHandler();
     this.loadLevel(1); // Start with level 1
   }
 
@@ -91,11 +91,10 @@ export class GameManager {
   // }
 
   emit(event: GameEvent) {
-    this.eventHandler.handle(event)
-  
+    this.eventHandler.handle(event);
+
     if (event.type === "playerMoved") {
       this.steps++;
-      console.log(`[Game] Steps: ${this.steps}`);
     }
   }
 }

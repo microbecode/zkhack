@@ -24,7 +24,10 @@ const loadCircuit = async () => {
   return defaultCircuit;
 };
 
-export const runAction = async (positionX: number, positionY: number) => {
+export const runAction = async (
+  positionX: number,
+  positionY: number
+): Promise<string> => {
   NodeService.initialize("http://localhost:4321");
   const nodeService = NodeService.getInstance();
 
@@ -36,9 +39,9 @@ export const runAction = async (positionX: number, positionY: number) => {
     identity: IDENTITY,
     blobs: [blob2],
   };
-  console.log("registering contract");
+  //console.log("registering contract");
   await register_contract(nodeService.client as any);
-  console.log("sending blob tx");
+  //console.log("sending blob tx");
   const txHash = await nodeService.client.sendBlobTx(blobTx);
 
   const proofTx = await build_proof_transaction(
@@ -48,11 +51,12 @@ export const runAction = async (positionX: number, positionY: number) => {
     0,
     1
   );
-  console.log("original", proofTx);
 
   const proofTxHash = await nodeService.client.sendProofTx(proofTx);
 
   console.log("PROOF TX HASH: ", proofTxHash);
+
+  return txHash;
 };
 
 const build_my_blob = async (

@@ -87,7 +87,13 @@ export class GridHandler {
       throw Error("Grid cannot be null here.");
     }
 
-    const cell = this.grid[y]?.[x];
+    // Check if coordinates are within grid boundaries
+    if (y < 0 || y >= this.grid.length || x < 0 || x >= this.grid[y].length) {
+      this.game.emit({ type: "playerCollided", x, y });
+      return false;
+    }
+
+    const cell = this.grid[y][x];
 
     if (cell.type == CellType.WALL) {
       this.game.emit({ type: "playerCollided", x, y });
