@@ -8,9 +8,9 @@ export enum CellType {
 }
 
 export type Cell = {
-    x: number,
-    y: number,
-    type: CellType
+    x: number;
+    y: number;
+    type: CellType;
+    sprite?: string;
     item?: Item;
-
-}
+};
