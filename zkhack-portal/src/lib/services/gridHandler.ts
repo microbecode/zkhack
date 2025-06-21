@@ -14,31 +14,48 @@ export class GridHandler {
   loadLevel(level: Level): void {
     this.currentLevel = level;
     const grid: Cell[][] = [];
-
+  
     for (let y = 0; y < level.grid.length; y++) {
       const row: Cell[] = [];
       for (let x = 0; x < level.grid[y].length; x++) {
+        const type = level.grid[y][x];
+        let sprite: string;
+  
+        switch (type) {
+          case CellType.WALL:
+            const random = Math.floor(Math.random() * 4) + 1;
+            sprite = `/sprites/building-${random}.png`;
+            break;
+          case CellType.END:
+            sprite = `/sprites/kebab-store-1.png`;
+            break;
+          default:
+            sprite = `/sprites/road-1.png`;
+            break;
+        }
+  
         row.push({
           x,
           y,
-          type: level.grid[y][x],
+          type,
+          sprite,
           item: undefined,
         });
       }
       grid.push(row);
     }
-
+  
     // Place items from level data
     level.items.forEach(({ x, y, item }) => {
       if (grid[y] && grid[y][x]) {
         grid[y][x].item = item;
       }
     });
-
+  
     this.grid = grid;
     this.startPosition = grid[level.startPosition.y][level.startPosition.x];
     this.endPosition = grid[level.endPosition.y][level.endPosition.x];
-  }
+  }  
 
   generateGrid(rows: number, cols: number): void {
     const grid: Cell[][] = [];
@@ -47,6 +64,12 @@ export class GridHandler {
       for (let x = 0; x < cols; x++) {
         let type: CellType =
           Math.random() < 0.2 ? CellType.WALL : CellType.EMPTY;
+        if (type === CellType.WALL) {
+          const random = Math.floor(Math.random() * 4) + 1;
+          row.push({ x, y, type, sprite: `/sprites/building-${random}.png` });
+        } else if (type === CellType.EMPTY){
+          row.push({ x, y, type, sprite: `/sprites/road-1.png` });
+        }
         row.push({ x, y, type });
       }
       grid.push(row);
@@ -54,6 +77,7 @@ export class GridHandler {
 
     grid[0][0].type = CellType.START;
     grid[rows - 1][cols - 1].type = CellType.END;
+    grid[rows - 1][cols - 1].sprite = `/sprites/kebab-store-1.png`;
     this.grid = grid;
     this.startPosition = grid[0][0];
     this.endPosition = grid[rows - 1][cols - 1];
