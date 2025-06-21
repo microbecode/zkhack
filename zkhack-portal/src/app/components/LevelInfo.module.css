@@ -1,0 +1,129 @@
+.levelInfo {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.levelHeader h2 {
+    margin: 0 0 8px 0;
+    color: #fff;
+    font-size: 1.5em;
+}
+
+.levelHeader p {
+    margin: 0 0 20px 0;
+    color: #ccc;
+    font-size: 1em;
+    line-height: 1.4;
+}
+
+.progressInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.itemProgress,
+.levelStatus,
+.stepProgress {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.itemProgress span:first-child,
+.levelStatus span:first-child,
+.stepProgress span:first-child {
+    font-size: 0.9em;
+    color: #aaa;
+}
+
+.itemCount {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+.completed {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.inProgress {
+    color: #FF9800;
+    font-weight: bold;
+}
+
+.stepCount {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #2196F3;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.controls button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    flex: 1;
+    min-width: 120px;
+}
+
+.resetButton {
+    background: #f44336;
+    color: white;
+}
+
+.resetButton:hover {
+    background: #d32f2f;
+}
+
+.prevButton {
+    background: #2196F3;
+    color: white;
+}
+
+.prevButton:hover {
+    background: #1976D2;
+}
+
+.nextButton {
+    background: #4CAF50;
+    color: white;
+}
+
+.nextButton:hover {
+    background: #388E3C;
+}
+
+@media (max-width: 768px) {
+    .progressInfo {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .controls {
+        flex-direction: column;
+    }
+
+    .controls button {
+        min-width: auto;
+    }
+}

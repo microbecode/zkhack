@@ -1,0 +1,86 @@
+.levelSelector {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.levelSelector h2 {
+    margin: 0 0 20px 0;
+    color: #fff;
+    text-align: center;
+}
+
+.levelGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.levelCard {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    text-align: center;
+}
+
+.levelCard:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.levelCard.active {
+    border-color: #4CAF50;
+    background: rgba(76, 175, 80, 0.2);
+}
+
+.levelCard h3 {
+    margin: 0 0 8px 0;
+    color: #fff;
+    font-size: 1.2em;
+}
+
+.levelCard p {
+    margin: 0 0 10px 0;
+    color: #ccc;
+    font-size: 0.9em;
+}
+
+.progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8em;
+    color: #aaa;
+}
+
+.completed {
+    color: #4CAF50;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.levelCard.available {
+    border-color: #2196F3;
+}
+
+.levelCard.completed {
+    border-color: #4CAF50;
+    background: rgba(76, 175, 80, 0.1);
+}
+
+.levelCard.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: #666;
+}
+
+.levelCard.locked:hover {
+    transform: none;
+    background: rgba(255, 255, 255, 0.1);
+}

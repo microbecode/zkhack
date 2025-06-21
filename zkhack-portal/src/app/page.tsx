@@ -5,14 +5,15 @@ import styles from "./page.module.css";
 import Grid from "./components/Grid";
 import { HyliWallet, useWallet, WalletProvider } from "hyli-wallet";
 import { CONTRACT_NAME, runAction } from "@/lib/hyli/hyli";
-import { useGame } from "./context/GameContext";
+import { GameProvider, useGame } from "./context/GameContext";
 import Player from "./components/Player";
 import { ItemComponent } from "./components/Item";
-import { Cell } from "@/lib/types/cell";
+import { LevelInfo } from "./components/LevelInfo";
+import { LevelSelector } from "./components/LevelSelector";
 
 function Home() {
   const { logout, wallet, createIdentityBlobs } = useWallet();
-  const [grid, setGrid] = useState<Cell[][]>([]);
+  const [grid, setGrid] = useState<any[][]>([]);
   const [currNum, setCurrNum] = useState(0); // temp location of the player
 
   const action = async () => {
@@ -26,8 +27,6 @@ function Home() {
   const [, forceRender] = useState(0);
 
   useEffect(() => {
-    // if (!gm.gridHandler.grid) return;
-    // console.log(gm)
     const handleKeyDown = (e: KeyboardEvent) => {
       const moveMap = {
         ArrowUp: [0, -1],
@@ -47,12 +46,24 @@ function Home() {
     };
 
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    // Listen for levelChanged events
+    const handler = (event: any) => {
+      if (event.type === "levelChanged") {
+        forceRender((n) => n + 1);
+      }
+    };
+    gm.onEvent(handler);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      // No way to remove a single event handler from gm, but that's ok for now
+    };
   }, [gm]);
 
   return (
     <div className={styles.page}>
       <main className={styles.main}>
+        <LevelInfo />
         <Grid grid={gm.gridHandler.grid}>
           {gm.gridHandler.grid
             ?.flat()
@@ -68,11 +79,12 @@ function Home() {
             )}
           <Player handler={gm.playerHandler}></Player>
         </Grid>
-        <button onClick={() => logout()}>Logout</button>
-        <button onClick={() => action()}>Action</button>
+        <LevelSelector />
+        <div className={styles.buttonContainer}>
+          <button onClick={() => logout()}>Logout</button>
+          <button onClick={() => action()}>Action</button>
+        </div>
       </main>
-      {/* <footer className={styles.footer}>
-      </footer> */}
     </div>
   );
 }
@@ -84,7 +96,11 @@ function AppContent() {
     return <LandingPage />;
   }
 
-  return <Home />;
+  return (
+    <GameProvider>
+      <Home />
+    </GameProvider>
+  );
 }
 
 function LandingPage() {
