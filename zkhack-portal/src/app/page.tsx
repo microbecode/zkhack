@@ -73,7 +73,7 @@ function Home() {
           // Handle transaction asynchronously without blocking UI
           runAction(newPos.x, newPos.y)
             .then((txHash) => {
-              console.log("txHash", txHash);
+              //console.log("txHash", txHash);
               const shortHash = txHash.slice(0, 5) + "..." + txHash.slice(-5);
               addToast(`Generated tx: ${shortHash}`);
             })

@@ -101,12 +101,6 @@ const build_proof_transaction = async (
   const noir = new Noir(circuit);
   const backend = new UltraHonkBackend(circuit.bytecode);
 
-  //const identity = "hyli@circuit";
-
-  //const { witness } = await noir.execute({ x, y });
-
-  //const hashed_password_bytes = await sha256(stringToBytes(PASSWORD));
-
   const data = generateProverData(
     IDENTITY,
     positionX,
@@ -115,8 +109,6 @@ const build_proof_transaction = async (
     blob_index,
     tx_blob_count
   );
-
-  console.log("DATA", data);
 
   const { witness } = await noir.execute(data);
 
