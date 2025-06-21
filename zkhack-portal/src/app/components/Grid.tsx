@@ -1,6 +1,6 @@
 import { Cell, CellType } from 'lib/types/cell';
 
-export default function Grid({ grid }: { grid: Cell[][] }) {
+export default function Grid({ grid, children }: { grid: Cell[][] | null, children?: React.ReactNode }) {
     if (!grid || grid.length === 0) return <p>Loading grid...</p>; // fallback
 
     return (
@@ -11,11 +11,12 @@ export default function Grid({ grid }: { grid: Cell[][] }) {
                     style={{
                         width: 32,
                         height: 32,
-                        border: '1px solid #ccc',
                         backgroundColor: getColor(cell.type),
+                        boxSizing: 'border-box',
                     }}
                 />
             ))}
+            {children}
         </div>
     );
 }

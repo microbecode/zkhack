@@ -1,3 +1,5 @@
+import { Item } from "./item";
+
 export enum CellType {
     EMPTY = 'empty',
     WALL = 'wall',
@@ -5,8 +7,10 @@ export enum CellType {
     END = 'end',
 }
 
-export interface Cell {
+export type Cell = {
     x: number,
     y: number,
     type: CellType
+    item?: Item;
+
 }

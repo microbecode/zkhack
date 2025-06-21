@@ -1,16 +1,27 @@
-export class PlayerHandler {
-    curX: number
-    curY: number
+import { Player } from "../types/player";
+import { GameManager } from "./gameManager";
 
-    constructor(startX: number, startY: number){
-        this.curX = startX
-        this.curY = startY
+export class PlayerHandler {
+    player: Player
+
+    constructor(startX: number, startY: number, private game: GameManager) {
+        this.player = {
+            x: startX,
+            y: startY
+        }
     }
 
-    move(e: KeyboardEvent): void {
-        if (e.key === 'ArrowUp') this.curY -= 1;
-        if (e.key === 'ArrowDown') this.curY += 1;
-        if (e.key === 'ArrowLeft') this.curX -= 1;
-        if (e.key === 'ArrowRight') this.curX += 1;
+    get playerPosition() {
+        return { x: this.player.x, y: this.player.y };
+    }
+
+    move(dx: number, dy: number, handleCell: (x: number, y: number) => boolean) {
+        const newX = this.player.x + dx;
+        const newY = this.player.y + dy;
+
+        if (handleCell(newX, newY)) {
+            this.player.x = newX;
+            this.player.y = newY;
+        }
     }
 }
