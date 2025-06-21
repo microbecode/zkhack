@@ -11,7 +11,8 @@ import { Noir } from "@noir-lang/noir_js";
 import { reconstructHonkProof, UltraHonkBackend } from "@aztec/bb.js";
 
 export const CONTRACT_NAME = "circuit";
-
+const IDENTITY = `hyli@${CONTRACT_NAME}`;
+const PASSWORD = "hylisecure";
 // We'll load the circuit dynamically
 let defaultCircuit: any = null;
 
@@ -30,18 +31,17 @@ export const runAction = async (
   NodeService.initialize("http://localhost:4321");
   const nodeService = NodeService.getInstance();
 
-  const username = "hyli";
-  const identity = `${username}@circuit`;
-
   const blob0 = identityBlobs[0];
   const blob1 = identityBlobs[1];
 
   const args: [number, number] = [location, location + 1];
 
-  const blob2 = await build_my_blob(...args);
+  const hashed_password_bytes = await sha256(stringToBytes(PASSWORD));
+
+  const blob2 = await build_my_blob(hashed_password_bytes);
 
   const blobTx: BlobTransaction = {
-    identity,
+    identity: IDENTITY,
     blobs: [blob2],
   };
   console.log("registering contract");
@@ -57,10 +57,10 @@ export const runAction = async (
   console.log("PROOF TX HASH: ", proofTxHash);
 };
 
-const build_my_blob = async (x: number, y: number): Promise<Blob> => {
+const build_my_blob = async (pwd: Uint8Array): Promise<Blob> => {
   const secretBlob: Blob = {
     contract_name: CONTRACT_NAME,
-    data: Array.from([x, y]),
+    data: Array.from(pwd),
   };
 
   return secretBlob;
@@ -96,19 +96,18 @@ const build_proof_transaction = async (
   const noir = new Noir(circuit);
   const backend = new UltraHonkBackend(circuit.bytecode);
 
-  const identity = "hyli@circuit";
-  const password = "hylisecure";
+  //const identity = "hyli@circuit";
 
   //const { witness } = await noir.execute({ x, y });
 
-  const hashed_password_bytes = await sha256(stringToBytes(password));
+  const hashed_password_bytes = await sha256(stringToBytes(PASSWORD));
   let encoder = new TextEncoder();
-  let id_prefix = encoder.encode(`${identity}:`);
+  let id_prefix = encoder.encode(`${IDENTITY}:`);
   let extended_id = new Uint8Array([...id_prefix, ...hashed_password_bytes]);
   const stored_hash = await sha256(extended_id);
 
   const data = generateProverData(
-    identity,
+    IDENTITY,
     hashed_password_bytes,
     stored_hash,
     tx_hash,
@@ -160,8 +159,8 @@ const generateProverData = (
   const tx_hash_len = tx_hash.length;
   const index = blob_index;
   const blob_number = 1;
-  const blob_contract_name_len = "circuit".length;
-  const blob_contract_name = "circuit".padEnd(256, "0");
+  const blob_contract_name_len = CONTRACT_NAME.length;
+  const blob_contract_name = CONTRACT_NAME.padEnd(256, "0");
   const blob_capacity = 32;
   const blob_len = 32;
   const blob: number[] = Array.from(stored_hash);
