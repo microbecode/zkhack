@@ -11,10 +11,12 @@ import { runAction } from "@/lib/hyli/hyli";
 function Home() {
   const { logout, wallet, createIdentityBlobs } = useWallet();
   const [grid, setGrid] = useState<Cell[][]>([]);
+  const [currNum, setCurrNum] = useState(0); // temp location of the player
 
   const action = async () => {
     const [blob0, blob1] = createIdentityBlobs();
-    await runAction([blob0, blob1]);
+    setCurrNum(currNum + 1);
+    await runAction([blob0, blob1], currNum);
   };
 
   useEffect(() => {

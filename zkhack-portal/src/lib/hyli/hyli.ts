@@ -1,10 +1,4 @@
-import {
-  WalletProvider,
-  HyliWallet,
-  useWallet,
-  walletContractName,
-  IndexerService,
-} from "hyli-wallet";
+import { walletContractName, IndexerService } from "hyli-wallet";
 import { NodeService } from "./NodeService";
 import {
   BlobTransaction,
@@ -16,7 +10,7 @@ import { CompiledCircuit, InputMap } from "@noir-lang/types";
 import { Noir } from "@noir-lang/noir_js";
 import { reconstructHonkProof, UltraHonkBackend } from "@aztec/bb.js";
 
-const CONTRACT_NAME = "stuff";
+const CONTRACT_NAME = "circuit";
 
 // We'll load the circuit dynamically
 let defaultCircuit: any = null;
@@ -29,20 +23,22 @@ const loadCircuit = async () => {
   return defaultCircuit;
 };
 
-export const runAction = async (identityBlobs: [Blob, Blob]) => {
-  const indexerService = IndexerService.getInstance();
+export const runAction = async (
+  identityBlobs: [Blob, Blob],
+  location: number
+) => {
   NodeService.initialize("http://localhost:4321");
   const nodeService = NodeService.getInstance();
 
   const username = "hyli";
-  const password = "hylisecure";
   const identity = `${username}@${walletContractName}`;
 
-  //const [blob0, blob1] = createIdentityBlobs();
   const blob0 = identityBlobs[0];
   const blob1 = identityBlobs[1];
 
-  const blob2 = await build_my_blob(1, 2);
+  const args: [number, number] = [location, location + 1];
+
+  const blob2 = await build_my_blob(...args);
 
   const blobTx: BlobTransaction = {
     identity,
@@ -53,7 +49,7 @@ export const runAction = async (identityBlobs: [Blob, Blob]) => {
   console.log("sending blob tx");
   const txHash = await nodeService.client.sendBlobTx(blobTx);
 
-  const proofTx = await build_proof_transaction(1, 2);
+  const proofTx = await build_proof_transaction(...args);
   console.log("original", proofTx);
 
   const proofTxHash = await nodeService.client.sendProofTx(proofTx);
