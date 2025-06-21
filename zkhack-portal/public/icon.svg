@@ -1,0 +1,18 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Kebab skewer -->
+  <rect x="15" y="2" width="2" height="28" fill="#8B4513" rx="1"/>
+  
+  <!-- Meat pieces -->
+  <circle cx="16" cy="6" r="3" fill="#8B0000"/>
+  <circle cx="16" cy="12" r="3" fill="#8B0000"/>
+  <circle cx="16" cy="18" r="3" fill="#8B0000"/>
+  <circle cx="16" cy="24" r="3" fill="#8B0000"/>
+  
+  <!-- Vegetable pieces -->
+  <circle cx="16" cy="9" r="2.5" fill="#228B22"/>
+  <circle cx="16" cy="15" r="2.5" fill="#FFD700"/>
+  <circle cx="16" cy="21" r="2.5" fill="#FF6347"/>
+  
+  <!-- Skewer tip -->
+  <polygon points="16,2 14,0 18,0" fill="#654321"/>
+</svg> 
