@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import Grid from "./components/Grid";
 import { HyliWallet, useWallet, WalletProvider } from "hyli-wallet";
-import { runAction } from "@/lib/hyli/hyli";
+import { CONTRACT_NAME, runAction } from "@/lib/hyli/hyli";
 import { useGame } from "./context/GameContext";
 import Player from "./components/Player";
 import { ItemComponent } from "./components/Item";
@@ -21,7 +21,7 @@ function Home() {
     await runAction([blob0, blob1], currNum);
   };
 
-  const gm = useGame()
+  const gm = useGame();
 
   const [, forceRender] = useState(0);
 
@@ -39,33 +39,33 @@ function Home() {
       const move = moveMap[e.key as keyof typeof moveMap];
 
       if (move) {
-        gm.playerHandler.move(
-          move[0],
-          move[1],
-          (x, y) => gm.gridHandler.handleCell(x, y)
+        gm.playerHandler.move(move[0], move[1], (x, y) =>
+          gm.gridHandler.handleCell(x, y)
         );
-        forceRender(n => n + 1); // trigger rerender
+        forceRender((n) => n + 1); // trigger rerender
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [gm]);
 
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         <Grid grid={gm.gridHandler.grid}>
-          {gm.gridHandler.grid?.flat().map(cell =>
-            cell.item ? (
-              <ItemComponent
-                key={`item-${cell.item.id}`}
-                item={cell.item}
-                x={cell.x}
-                y={cell.y}
-              />
-            ) : null
-          )}
+          {gm.gridHandler.grid
+            ?.flat()
+            .map((cell) =>
+              cell.item ? (
+                <ItemComponent
+                  key={`item-${cell.item.id}`}
+                  item={cell.item}
+                  x={cell.x}
+                  y={cell.y}
+                />
+              ) : null
+            )}
           <Player handler={gm.playerHandler}></Player>
         </Grid>
         <button onClick={() => logout()}>Logout</button>
@@ -97,7 +97,7 @@ function LandingPage() {
         <p className="hero-subtitle">
           A starting point for your next blockchain application
         </p>
-        <HyliWallet providers={["password", "google", "github"]} />
+        <HyliWallet providers={["password"]} />
       </div>
       <div className="floating-shapes">
         <div className="shape shape-1"></div>
@@ -118,7 +118,7 @@ function App() {
       }}
       sessionKeyConfig={{
         duration: 24 * 60 * 60 * 1000, // Session key duration in ms (default: 72h)
-        whitelist: ["circuit"], // Required: contracts allowed for session key
+        whitelist: [CONTRACT_NAME], // Required: contracts allowed for session key
       }}
       /* forceSessionKeyCreation={true} // Default: undefined, letting user decide */
     >

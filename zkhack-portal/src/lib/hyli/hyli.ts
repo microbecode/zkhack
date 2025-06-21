@@ -10,7 +10,7 @@ import { CompiledCircuit, InputMap } from "@noir-lang/types";
 import { Noir } from "@noir-lang/noir_js";
 import { reconstructHonkProof, UltraHonkBackend } from "@aztec/bb.js";
 
-const CONTRACT_NAME = "circuit";
+export const CONTRACT_NAME = "circuit";
 
 // We'll load the circuit dynamically
 let defaultCircuit: any = null;
