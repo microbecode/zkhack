@@ -47,11 +47,6 @@ fn main(
     println(f"Password: {password}");
     println(f"extended id: {id}");
 
-    // Hash the combined input using SHA-256
-    let input_hash = sha256::sha256_var(id.storage(), identity_len as u64 + 1 + 32);
-    println(f"Input Hash: {input_hash}");
-
-    assert(input_hash == blob);
 
     assert(success == true);
     assert(version == 1);

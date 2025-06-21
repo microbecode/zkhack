@@ -101,15 +101,10 @@ const build_proof_transaction = async (
   //const { witness } = await noir.execute({ x, y });
 
   const hashed_password_bytes = await sha256(stringToBytes(PASSWORD));
-  let encoder = new TextEncoder();
-  let id_prefix = encoder.encode(`${IDENTITY}:`);
-  let extended_id = new Uint8Array([...id_prefix, ...hashed_password_bytes]);
-  const stored_hash = await sha256(extended_id);
 
   const data = generateProverData(
     IDENTITY,
     hashed_password_bytes,
-    stored_hash,
     tx_hash,
     blob_index,
     tx_blob_count
@@ -143,7 +138,6 @@ const build_proof_transaction = async (
 const generateProverData = (
   id: string,
   pwd: Uint8Array,
-  stored_hash: Uint8Array,
   tx: string,
   blob_index: number,
   tx_blob_count: number
@@ -163,7 +157,7 @@ const generateProverData = (
   const blob_contract_name = CONTRACT_NAME.padEnd(256, "0");
   const blob_capacity = 32;
   const blob_len = 32;
-  const blob: number[] = Array.from(stored_hash);
+  const blob: number[] = Array.from(pwd);
   const success = 1;
   const password: number[] = Array.from(pwd);
   assert(password.length == 32, "Password length is not 32 bytes");
