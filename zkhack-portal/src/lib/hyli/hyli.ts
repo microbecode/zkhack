@@ -24,21 +24,13 @@ const loadCircuit = async () => {
   return defaultCircuit;
 };
 
-export const runAction = async (
-  identityBlobs: [Blob, Blob],
-  location: number
-) => {
+export const runAction = async (positionX: number, positionY: number) => {
   NodeService.initialize("http://localhost:4321");
   const nodeService = NodeService.getInstance();
 
-  const blob0 = identityBlobs[0];
-  const blob1 = identityBlobs[1];
+  //const args: [number, number] = [location, location + 1];
 
-  const args: [number, number] = [location, location + 1];
-
-  const hashed_password_bytes = await sha256(stringToBytes(PASSWORD));
-
-  const blob2 = await build_my_blob(hashed_password_bytes);
+  const blob2 = await build_my_blob(positionX, positionY);
 
   const blobTx: BlobTransaction = {
     identity: IDENTITY,
@@ -49,7 +41,13 @@ export const runAction = async (
   console.log("sending blob tx");
   const txHash = await nodeService.client.sendBlobTx(blobTx);
 
-  const proofTx = await build_proof_transaction(...args, txHash, 0, 1);
+  const proofTx = await build_proof_transaction(
+    positionX,
+    positionY,
+    txHash,
+    0,
+    1
+  );
   console.log("original", proofTx);
 
   const proofTxHash = await nodeService.client.sendProofTx(proofTx);
@@ -57,10 +55,13 @@ export const runAction = async (
   console.log("PROOF TX HASH: ", proofTxHash);
 };
 
-const build_my_blob = async (pwd: Uint8Array): Promise<Blob> => {
+const build_my_blob = async (
+  positionX: number,
+  positionY: number
+): Promise<Blob> => {
   const secretBlob: Blob = {
     contract_name: CONTRACT_NAME,
-    data: Array.from(pwd),
+    data: padTo32Two(positionX, positionY),
   };
 
   return secretBlob;
@@ -86,8 +87,8 @@ const register_contract = async (
 };
 
 const build_proof_transaction = async (
-  x: number,
-  y: number,
+  positionX: number,
+  positionY: number,
   tx_hash: string,
   blob_index: number,
   tx_blob_count: number
@@ -100,11 +101,12 @@ const build_proof_transaction = async (
 
   //const { witness } = await noir.execute({ x, y });
 
-  const hashed_password_bytes = await sha256(stringToBytes(PASSWORD));
+  //const hashed_password_bytes = await sha256(stringToBytes(PASSWORD));
 
   const data = generateProverData(
     IDENTITY,
-    hashed_password_bytes,
+    positionX,
+    positionY,
     tx_hash,
     blob_index,
     tx_blob_count
@@ -126,6 +128,19 @@ const build_proof_transaction = async (
   };
 };
 
+const padTo32 = (x: number): number[] => {
+  const result = new Array(32).fill(0);
+  result[31] = x;
+  return result;
+};
+
+const padTo32Two = (x: number, y: number): number[] => {
+  const result = new Array(32).fill(0);
+  result[31] = x;
+  result[30] = y;
+  return result;
+};
+
 /**
  * Generates the prover data required for the Noir circuit.
  *
@@ -137,7 +152,8 @@ const build_proof_transaction = async (
  */
 const generateProverData = (
   id: string,
-  pwd: Uint8Array,
+  positionX: number,
+  positionY: number,
   tx: string,
   blob_index: number,
   tx_blob_count: number
@@ -155,12 +171,10 @@ const generateProverData = (
   const blob_number = 1;
   const blob_contract_name_len = CONTRACT_NAME.length;
   const blob_contract_name = CONTRACT_NAME.padEnd(256, "0");
-  const blob_capacity = 32;
-  const blob_len = 32;
-  const blob: number[] = Array.from(pwd);
-  const success = 1;
-  const password: number[] = Array.from(pwd);
-  assert(password.length == 32, "Password length is not 32 bytes");
+  const blob_capacity: number = 32;
+  const blob_len: number = 32;
+  const blob: number[] = padTo32Two(positionX, positionY);
+  const success: number = 1;
   assert(blob.length == blob_len, "Blob length is not 32 bytes");
 
   return {
@@ -183,7 +197,8 @@ const generateProverData = (
     blob,
     tx_blob_count,
     success,
-    password,
+    positionX,
+    positionY,
   };
 };
 

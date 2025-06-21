@@ -12,14 +12,13 @@ import { LevelInfo } from "./components/LevelInfo";
 import { LevelSelector } from "./components/LevelSelector";
 
 function Home() {
-  const { logout, wallet, createIdentityBlobs } = useWallet();
+  const { logout, wallet } = useWallet();
   const [grid, setGrid] = useState<any[][]>([]);
   const [currNum, setCurrNum] = useState(0); // temp location of the player
 
   const action = async () => {
-    const [blob0, blob1] = createIdentityBlobs();
     setCurrNum(currNum + 1);
-    await runAction([blob0, blob1], currNum);
+    await runAction(currNum, currNum + 1);
   };
 
   const gm = useGame();
@@ -90,7 +89,7 @@ function Home() {
 }
 
 function AppContent() {
-  const { logout, wallet, createIdentityBlobs } = useWallet();
+  const { wallet } = useWallet();
 
   if (!wallet) {
     return <LandingPage />;

@@ -37,16 +37,9 @@ fn main(
     // settled as failed.
     success: pub bool,
     // ------ Private inputs ------
-    password: [u8; 32],
+    positionX: u32,
+    positionY: u32,
 ) {
-    let mut id: BoundedVec<u8, 256> = BoundedVec::from_parts(identity.as_bytes(), identity_len as u32);
-    id.extend_from_slice(":".as_bytes());
-    id.extend_from_slice(password);
-
-    println(f"Identity: {identity}");
-    println(f"Password: {password}");
-    println(f"extended id: {id}");
-
 
     assert(success == true);
     assert(version == 1);
@@ -58,4 +51,13 @@ fn main(
     assert(blob_len == 32);
     assert(blob_number == 1);
     assert(tx_blob_count >= 1);
+
+    check_limits(positionX, positionY);
+}
+
+fn check_limits(positionX: u32, positionY: u32) {
+    assert(positionX >= 0);
+    assert(positionX as u32 <= 9);
+    assert(positionY >= 0);
+    assert(positionY <= 9);
 }
