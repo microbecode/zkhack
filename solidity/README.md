@@ -48,7 +48,7 @@ $ anvil
 ### Deploy
 
 ```shell
-$ forge script script/Verification.s.sol:VerificationScript --rpc-url https://base-sepolia.drpc.org --private-key xxx
+$ forge script script/Verification.s.sol:VerificationScript --rpc-url https://base-sepolia.drpc.org --private-key 0xxxx
 ```
 
 ### Cast
