@@ -4,8 +4,9 @@ import { Level } from "../types/level";
 // Level 1: Simple maze with basic obstacles
 export const LEVEL_1: Level = {
   id: 1,
-  name: "The Beginning",
-  description: "A simple maze to get you started. Find your way to the exit!",
+  name: "Kebab Apprentice",
+  description:
+    "Your first day at the kebab shop! Don't get lost in the kitchen maze, rookie!",
   grid: [
     [
       CellType.START,
@@ -129,9 +130,9 @@ export const LEVEL_1: Level = {
     ],
   ],
   items: [
-    { x: 2, y: 2, item: { id: "item-1-1", name: "Key Fragment" } },
-    { x: 4, y: 4, item: { id: "item-1-2", name: "Ancient Coin" } },
-    { x: 6, y: 6, item: { id: "item-1-3", name: "Mystic Gem" } },
+    { x: 2, y: 2, item: { id: "item-1-1", name: "Secret Sauce Recipe" } },
+    { x: 4, y: 4, item: { id: "item-1-2", name: "Golden Skewer" } },
+    { x: 6, y: 6, item: { id: "item-1-3", name: "Spice Master's Hat" } },
   ],
   startPosition: { x: 0, y: 0 },
   endPosition: { x: 9, y: 9 },
@@ -140,8 +141,9 @@ export const LEVEL_1: Level = {
 // Level 2: More complex maze with multiple paths
 export const LEVEL_2: Level = {
   id: 2,
-  name: "The Labyrinth",
-  description: "A more challenging maze with multiple paths and dead ends.",
+  name: "Kebab Chef's Nightmare",
+  description:
+    "The kitchen is a mess! Navigate through the chaos of pots, pans, and angry customers!",
   grid: [
     [
       CellType.START,
@@ -265,10 +267,10 @@ export const LEVEL_2: Level = {
     ],
   ],
   items: [
-    { x: 2, y: 1, item: { id: "item-2-1", name: "Crystal Shard" } },
-    { x: 7, y: 2, item: { id: "item-2-2", name: "Mystic Rune" } },
-    { x: 2, y: 6, item: { id: "item-2-3", name: "Ancient Scroll" } },
-    { x: 8, y: 8, item: { id: "item-2-4", name: "Golden Key" } },
+    { x: 2, y: 1, item: { id: "item-2-1", name: "Legendary Grill" } },
+    { x: 7, y: 2, item: { id: "item-2-2", name: "Chef's Apron of Power" } },
+    { x: 2, y: 6, item: { id: "item-2-3", name: "Mystical Spice Blend" } },
+    { x: 8, y: 8, item: { id: "item-2-4", name: "Customer's Smile" } },
   ],
   startPosition: { x: 0, y: 0 },
   endPosition: { x: 9, y: 9 },
@@ -277,9 +279,9 @@ export const LEVEL_2: Level = {
 // Level 3: Complex maze with strategic item placement
 export const LEVEL_3: Level = {
   id: 3,
-  name: "The Master's Challenge",
+  name: "Kebab Master's Ultimate Challenge",
   description:
-    "The ultimate test. Navigate through a complex maze with strategic obstacles.",
+    "The final test! Prove you're worthy of the title 'Kebab Master Supreme'!",
   grid: [
     [
       CellType.START,
@@ -403,11 +405,11 @@ export const LEVEL_3: Level = {
     ],
   ],
   items: [
-    { x: 4, y: 1, item: { id: "item-3-1", name: "Dragon Scale" } },
-    { x: 8, y: 2, item: { id: "item-3-2", name: "Phoenix Feather" } },
-    { x: 2, y: 4, item: { id: "item-3-3", name: "Unicorn Horn" } },
-    { x: 8, y: 6, item: { id: "item-3-4", name: "Mystic Orb" } },
-    { x: 4, y: 8, item: { id: "item-3-5", name: "Master's Key" } },
+    { x: 4, y: 1, item: { id: "item-3-1", name: "Dragon's Breath Hot Sauce" } },
+    { x: 8, y: 2, item: { id: "item-3-2", name: "Phoenix Feather Skewer" } },
+    { x: 2, y: 4, item: { id: "item-3-3", name: "Unicorn Meat (Vegan)" } },
+    { x: 8, y: 6, item: { id: "item-3-4", name: "Mystical Pita Bread" } },
+    { x: 4, y: 8, item: { id: "item-3-5", name: "Master's Kebab Crown" } },
   ],
   startPosition: { x: 0, y: 0 },
   endPosition: { x: 9, y: 9 },
