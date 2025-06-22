@@ -8,6 +8,7 @@ This is a quest for finding all the kebabs in town - verifiably, and with the le
 
 - [Hyli](https://hyli.org/) L1 blockchain
 - Noir UltraHonk ZK proofs
+- Horizen / ZkVerify ZK verification network
 
 ## Setup
 
@@ -29,4 +30,7 @@ You can now go to http://localhost:3000/ and login with credentials:
 - Username: `hyli`
 - Password: `hylisecure`
 
+## Notes
+
+Unfortunately, we did not get the Horizen proof verification working. Our Solidity verifier contract is written in `solidity` folder in this project and deployed at https://sepolia.basescan.org/address/0xcab2ca58a30d437cce7204e015c86cfbd2cb3d07 . The verification code is in GitHub branch `feat/horizen`.
 
