@@ -8,11 +8,6 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Highly Kebabulous - ZKHack",
   description: "A ZK-powered game built on the Hyli blockchain",
-  icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
-    apple: "/favicon.svg",
-  },
 };
 
 export default function RootLayout({
@@ -23,8 +18,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" />
+        <link
+          rel="shortcut icon"
+          href="/favicon.svg?v=2"
+          type="image/svg+xml"
+        />
+        <link rel="apple-touch-icon" href="/favicon.svg?v=2" />
       </head>
       <body className={inter.className}>
         <GameProvider>{children}</GameProvider>
