@@ -21,6 +21,7 @@ export class GameManager {
     this.playerHandler = new PlayerHandler(0, 0, this);
     this.eventHandler = new EventHandler();
     this.loadLevel(1); // Start with level 1
+    console.log('gamemanager constructor called')
   }
 
   loadLevel(levelId: number): void {
@@ -58,6 +59,7 @@ export class GameManager {
 
   nextLevel(): void {
     const nextLevelId = this.currentLevelId + 1;
+    console.log(`nextLevelId ${nextLevelId}`)
     if (LEVELS.find((l) => l.id === nextLevelId)) {
       this.loadLevel(nextLevelId);
     }

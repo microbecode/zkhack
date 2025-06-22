@@ -1,25 +1,32 @@
-// app/context/GameProvider.tsx
+// context/GameProvider.tsx
 "use client";
 
-import { ReactNode, useMemo, useState, useCallback } from "react";
-import { GameContext } from "./GameContext";
+import { ReactNode, useState, useRef } from "react";
+import { GameContext, GameUpdateContext } from "./GameContext";
 import { GameManager } from "lib/services/gameManager";
 
 export function GameProvider({ children }: { children: ReactNode }) {
   const [updateTrigger, setUpdateTrigger] = useState(0);
+  const gameRef = useRef<GameManager | null>(null);
 
-  const game = useMemo(() => {
+  if (!gameRef.current) {
     const gm = new GameManager();
 
-    // Override the loadLevel method to trigger re-renders
     const originalLoadLevel = gm.loadLevel.bind(gm);
     gm.loadLevel = (levelId: number) => {
       originalLoadLevel(levelId);
-      setUpdateTrigger((prev) => prev + 1);
+      setUpdateTrigger((n) => n + 1); // triggers rerender for consumers of GameUpdateContext
+      console.log("loadLevel triggered -> rerender");
     };
 
-    return gm;
-  }, [updateTrigger]);
+    gameRef.current = gm;
+  }
 
-  return <GameContext.Provider value={game}>{children}</GameContext.Provider>;
+  return (
+    <GameContext.Provider value={gameRef.current}>
+      <GameUpdateContext.Provider value={updateTrigger}>
+        {children}
+      </GameUpdateContext.Provider>
+    </GameContext.Provider>
+  );
 }

@@ -5,7 +5,7 @@ import styles from "./page.module.css";
 import Grid from "./components/Grid";
 import { HyliWallet, useWallet, WalletProvider } from "hyli-wallet";
 import { CONTRACT_NAME, runAction } from "@/lib/hyli/hyli";
-import { GameProvider, useGame } from "./context/GameContext";
+import { GameProvider, useGame, useGameUpdateTrigger } from "./context/GameContext";
 import Player from "./components/Player";
 import { ItemComponent } from "./components/Item";
 import { LevelInfo } from "./components/LevelInfo";
