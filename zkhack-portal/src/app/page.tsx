@@ -11,6 +11,7 @@ import { ItemComponent } from "./components/Item";
 import { LevelInfo } from "./components/LevelInfo";
 import { LevelSelector } from "./components/LevelSelector";
 import { ToastContainer } from "./components/Toast";
+import Link from "next/link";
 
 function Home() {
   const { logout, wallet } = useWallet();
@@ -19,11 +20,6 @@ function Home() {
   const [toasts, setToasts] = useState<
     Array<{ id: string; message: string; duration?: number }>
   >([]);
-
-  const action = async () => {
-    setCurrNum(currNum + 1);
-    await runAction(currNum, currNum + 1);
-  };
 
   const gm = useGame();
 
@@ -98,30 +94,32 @@ function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <div style={{ display: 'flex', gap: 16 }}>
+        <div style={{ display: "flex", gap: 16 }}>
           <LevelInfo />
           <div>
-          <Grid grid={gm.gridHandler.grid}>
-          {gm.gridHandler.grid
-            ?.flat()
-            .map((cell) =>
-              cell.item ? (
-                <ItemComponent
-                  key={`item-${cell.item.id}`}
-                  item={cell.item}
-                  x={cell.x}
-                  y={cell.y}
-                />
-              ) : null
-            )}
-          <Player handler={gm.playerHandler}></Player>
-        </Grid>
+            <Grid grid={gm.gridHandler.grid}>
+              {gm.gridHandler.grid
+                ?.flat()
+                .map((cell) =>
+                  cell.item ? (
+                    <ItemComponent
+                      key={`item-${cell.item.id}`}
+                      item={cell.item}
+                      x={cell.x}
+                      y={cell.y}
+                    />
+                  ) : null
+                )}
+              <Player handler={gm.playerHandler}></Player>
+            </Grid>
           </div>
-        <LevelSelector />
+          <LevelSelector />
         </div>
         <div className={styles.buttonContainer}>
           <button onClick={() => logout()}>Logout</button>
-          <button onClick={() => action()}>Action</button>
+          <Link href="/leaderboard" className={styles.leaderboardLink}>
+            🏆 Leaderboard
+          </Link>
         </div>
       </main>
       <ToastContainer toasts={toasts} onRemoveToast={removeToast} />

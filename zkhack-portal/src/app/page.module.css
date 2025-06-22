@@ -19,25 +19,43 @@
 
 .buttonContainer {
     display: flex;
-    gap: 15px;
+    gap: 16px;
     margin-top: 20px;
 }
 
 .buttonContainer button {
     padding: 12px 24px;
+    background: rgba(255, 140, 0, 0.8);
+    color: white;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
     transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .buttonContainer button:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 140, 0, 1);
+    transform: translateY(-2px);
+}
+
+.leaderboardLink {
+    display: inline-block;
+    padding: 12px 24px;
+    background: rgba(255, 69, 0, 0.8);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.leaderboardLink:hover {
+    background: rgba(255, 69, 0, 1);
     transform: translateY(-2px);
 }
 
