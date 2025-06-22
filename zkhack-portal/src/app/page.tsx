@@ -5,7 +5,7 @@ import styles from "./page.module.css";
 import Grid from "./components/Grid";
 import { HyliWallet, useWallet, WalletProvider } from "hyli-wallet";
 import { CONTRACT_NAME, runAction } from "@/lib/hyli/hyli";
-import { GameProvider, useGame } from "./context/GameContext";
+import { GameProvider, useGame, useGameUpdateTrigger } from "./context/GameContext";
 import Player from "./components/Player";
 import { ItemComponent } from "./components/Item";
 import { LevelInfo } from "./components/LevelInfo";
@@ -97,6 +97,21 @@ function Home() {
         <div style={{ display: "flex", gap: 16 }}>
           <LevelInfo />
           <div>
+            <Grid grid={gm.gridHandler.grid}>
+          {gm.gridHandler.grid
+            ?.flat()
+            .map((cell) =>
+              cell.item ? (
+                <ItemComponent
+                  key={`item-${cell.item.id}`}
+                  item={cell.item}
+                  x={cell.x}
+                  y={cell.y}
+                />
+              ) : null
+            )}
+          <Player handler={gm.playerHandler}></Player>
+        </Grid>
             <Grid grid={gm.gridHandler.grid}>
               {gm.gridHandler.grid
                 ?.flat()

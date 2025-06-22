@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useGame } from "../context/GameContext";
 import styles from "./LevelInfo.module.css";
 
@@ -5,6 +6,7 @@ export function LevelInfo() {
   const gm = useGame();
   const currentLevel = gm.getCurrentLevel();
   const progress = gm.getLevelProgress(gm.currentLevelId);
+  const [, forceRender] = useState(0);
 
   if (!currentLevel) return null;
 
