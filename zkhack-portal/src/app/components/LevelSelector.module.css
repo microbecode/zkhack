@@ -35,8 +35,8 @@
 }
 
 .levelCard.active {
-    border-color: #4CAF50;
-    background: rgba(76, 175, 80, 0.2);
+    border-color: #ff8c00;
+    background: rgba(255, 140, 0, 0.2);
 }
 
 .levelCard h3 {
@@ -60,18 +60,18 @@
 }
 
 .completed {
-    color: #4CAF50;
+    color: #ff8c00;
     font-weight: bold;
     font-size: 1.2em;
 }
 
 .levelCard.available {
-    border-color: #2196F3;
+    border-color: #ffa500;
 }
 
 .levelCard.completed {
-    border-color: #4CAF50;
-    background: rgba(76, 175, 80, 0.1);
+    border-color: #ff8c00;
+    background: rgba(255, 140, 0, 0.1);
 }
 
 .levelCard.locked {

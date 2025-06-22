@@ -49,23 +49,23 @@
 .itemCount {
     font-size: 1.2em;
     font-weight: bold;
-    color: #4CAF50;
+    color: #ff8c00;
 }
 
 .completed {
-    color: #4CAF50;
+    color: #ff8c00;
     font-weight: bold;
 }
 
 .inProgress {
-    color: #FF9800;
+    color: #ffa500;
     font-weight: bold;
 }
 
 .stepCount {
     font-size: 1.2em;
     font-weight: bold;
-    color: #2196F3;
+    color: #ff6347;
 }
 
 .controls {
@@ -86,30 +86,30 @@
 }
 
 .resetButton {
-    background: #f44336;
+    background: #ff4500;
     color: white;
 }
 
 .resetButton:hover {
-    background: #d32f2f;
+    background: #e63900;
 }
 
 .prevButton {
-    background: #2196F3;
+    background: #ff8c00;
     color: white;
 }
 
 .prevButton:hover {
-    background: #1976D2;
+    background: #e67e00;
 }
 
 .nextButton {
-    background: #4CAF50;
+    background: #ffa500;
     color: white;
 }
 
 .nextButton:hover {
-    background: #388E3C;
+    background: #e69500;
 }
 
 @media (max-width: 768px) {
