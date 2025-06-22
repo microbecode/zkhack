@@ -98,21 +98,6 @@ function Home() {
           <LevelInfo />
           <div>
             <Grid grid={gm.gridHandler.grid}>
-          {gm.gridHandler.grid
-            ?.flat()
-            .map((cell) =>
-              cell.item ? (
-                <ItemComponent
-                  key={`item-${cell.item.id}`}
-                  item={cell.item}
-                  x={cell.x}
-                  y={cell.y}
-                />
-              ) : null
-            )}
-          <Player handler={gm.playerHandler}></Player>
-        </Grid>
-            <Grid grid={gm.gridHandler.grid}>
               {gm.gridHandler.grid
                 ?.flat()
                 .map((cell) =>
