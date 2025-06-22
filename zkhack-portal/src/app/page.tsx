@@ -146,10 +146,10 @@ function LandingPage() {
     <div className="wallet-page-wrapper">
       <div className="landing-content-simple">
         <h1 className="hero-title">
-          <span className="gradient-text">Hyli</span> App Scaffold
+          <span className="gradient-text">Highly Kebabulous</span>
         </h1>
         <p className="hero-subtitle">
-          A starting point for your next blockchain application
+          A ZK-powered game built on the Hyli blockchain
         </p>
         <HyliWallet providers={["password"]} />
       </div>

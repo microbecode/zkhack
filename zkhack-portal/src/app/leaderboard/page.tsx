@@ -18,7 +18,7 @@ export default function LeaderboardPage() {
     <div className={styles.page}>
       <main className={styles.main}>
         <div className={styles.header}>
-          <h1>🏆 Kebab Quest Leaderboard</h1>
+          <h1>🏆 Highly Kebabulous Leaderboard</h1>
           <p>Top players in the quest for the perfect kebab</p>
         </div>
 

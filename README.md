@@ -1,8 +1,8 @@
-# Kebab Quest
+# Highly Kebabulous
 
 <img src="kebab.jpg" alt="Kebab Quest" width="300" />
 
-This is a quest for finding all the kebabs in town - verifiably, and with the least amount of effort.
+This is a quest for finding all the kebabs in town - verifiably, and with the least amount of steps.
 
 ## Used components
 
@@ -23,6 +23,7 @@ This will start a local Hyli node and blockchain, an indexer and other required 
 ### Run the frontend
 
 1. Clone this repository
+1. Enter the frontend folder: `cd zkhack-portal`
 1. Install dependencies: `yarn`
 1. Run the frontend: `yarn dev`
 

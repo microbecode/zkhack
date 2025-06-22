@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { GameProvider } from "./context/GameProvider";
 
+const inter = Inter({ subsets: ["latin"] });
+
 export const metadata: Metadata = {
-  title: "Kebab Quest - ZKHack",
-  description:
-    "Navigate through mazes and collect kebabs in this ZK-powered game",
+  title: "Highly Kebabulous - ZKHack",
+  description: "A ZK-powered game built on the Hyli blockchain",
   icons: {
-    icon: "/icon.svg",
-    shortcut: "/icon.svg",
-    apple: "/icon.svg",
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
   },
 };
 
@@ -21,10 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-        <link rel="shortcut icon" href="/icon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml" />
       </head>
-      <body className="">
+      <body className={inter.className}>
         <GameProvider>{children}</GameProvider>
       </body>
     </html>
