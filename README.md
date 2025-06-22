@@ -1,6 +1,6 @@
 # Highly Kebabulous
 
-<img src="kebab.jpg" alt="Kebab Quest" width="300" />
+<img src="front.png" alt="Game screenshot" width="500" />
 
 This is a quest for finding all the kebabs in town - verifiably, and with the least amount of steps.
 
@@ -9,6 +9,10 @@ This is a quest for finding all the kebabs in town - verifiably, and with the le
 - [Hyli](https://hyli.org/) L1 blockchain
 - Noir UltraHonk ZK proofs
 - Horizen / ZkVerify ZK verification network
+
+## Functionality
+
+Each step generates a Hyli blob transaction and starts generating a ZK proof for the action. The exact steps remain private, but the proof is verified by the Hyli and Horizen networks.
 
 ## Setup
 
@@ -30,6 +34,8 @@ This will start a local Hyli node and blockchain, an indexer and other required 
 You can now go to http://localhost:3000/ and login with credentials:
 - Username: `hyli`
 - Password: `hylisecure`
+
+<img src="kebab.jpg" alt="Highly Kebabulous" width="300" />
 
 ## Notes
 

@@ -61,3 +61,5 @@ fn check_limits(positionX: u32, positionY: u32) {
     assert(positionY >= 0);
     assert(positionY <= 9);
 }
+
+// TODO: add verifications for hitting walls, collecting kebabs and other rules.
