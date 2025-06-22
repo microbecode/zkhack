@@ -14,6 +14,8 @@ This is a quest for finding all the kebabs in town - verifiably, and with the le
 
 Each step generates a Hyli blob transaction and starts generating a ZK proof for the action. The exact steps remain private, but the proof is verified by the Hyli and Horizen networks.
 
+You can monitor Hyli transactions and proofs at https://explorer.hyli.org/ (switch the network to localhost).
+
 ## Setup
 
 ### Run a Hyli node
