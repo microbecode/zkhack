@@ -1,6 +1,6 @@
 # Highly Kebabulous
 
-<img src="front.png" alt="Game screenshot" width="500" />
+<img src="front.png" alt="Game screenshot" width="900" />
 
 This is a quest for finding all the kebabs in town - verifiably, and with the least amount of steps.
 
